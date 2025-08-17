@@ -31,16 +31,20 @@ func TestStatusHandler(t *testing.T) {
 			},
 		},
 	}
-	cute.NewTestBuilder().
-		Title("Simple test #1").
-		Description("Simple get request to '/status'").
-		Create().
-		RequestBuilder(
-			cute.WithURI("http://127.0.0.1:8080/status"),
-			cute.WithMethod(http.MethodGet),
-		).ExpectExecuteTimeout(10*time.Second).
-		ExpectStatus(http.StatusOK).
-		AssertBody(
-			json.Equal("$.status", "ok"),
-		).ExecuteTest(context.Background(), t)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			cute.NewTestBuilder().
+				Title(tc.name).
+				Create().
+				RequestBuilder(
+					cute.WithURI("http://127.0.0.1:8080"+tc.url),
+					cute.WithMethod(http.MethodGet),
+				).ExpectExecuteTimeout(10*time.Second).
+				ExpectStatus(http.StatusOK).
+				AssertBody(
+					json.Equal("$", tc.expected),
+				).ExecuteTest(context.Background(), t)
+		})
+	}
+
 }
