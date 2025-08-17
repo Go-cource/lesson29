@@ -11,6 +11,26 @@ import (
 )
 
 func TestStatusHandler(t *testing.T) {
+	testCases := []struct {
+		name     string
+		url      string
+		expected map[string]interface{}
+	}{
+		{
+			name: "Simple Status test",
+			url:  "/status",
+			expected: map[string]interface{}{
+				"status": "ok",
+			},
+		},
+		{
+			name: "Simple Healthy Test",
+			url:  "/healthy",
+			expected: map[string]interface{}{
+				"healthy": true,
+			},
+		},
+	}
 	cute.NewTestBuilder().
 		Title("Simple test #1").
 		Description("Simple get request to '/status'").
