@@ -8,6 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/status", hd.StatusHandler)
+	http.HandleFunc("/health", hd.HealthHandler)
 
 	fmt.Println("Server starting...")
 	http.ListenAndServe(":8080", nil)
